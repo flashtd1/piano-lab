@@ -8,6 +8,9 @@ export default function Header (props) {
   let index = router.findIndex(item => {
     return item.path === location.pathname
   })
+  if (index === -1) {
+    index = 0
+  }
   return (
     <Layout.Header>
       <Menu

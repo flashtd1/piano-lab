@@ -10,14 +10,6 @@ export default function Index() {
     {
       author: '小红',
       comment: 'hahaha'
-    },
-    {
-      author: '小红',
-      comment: 'hahaha'
-    },
-    {
-      author: '小红',
-      comment: 'hahaha'
     }
   ]
   return (

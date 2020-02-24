@@ -19,7 +19,7 @@ function Osmd() {
           for(var j = 0; j < notes.length; j++){
             const note = notes[j];
             // make sure our note is not silent
-            if((note != null) && (note.halfTone != 0)){
+            if((note !== null) && (note.halfTone !== 0)){
               allNotes.push({
                   "note": note.halfTone+12, // see issue #224
                   "time": iterator.currentTimeStamp.realValue * 4
