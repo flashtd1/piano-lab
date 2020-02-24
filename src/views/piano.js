@@ -1,7 +1,8 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, Fragment } from 'react'
 import Piano from 'html-piano'
 import MIDI from 'midi.js'
 import '../assets/piano.css'
+import { Row, Col, Affix } from 'antd'
 const newPiano = Piano(window).newPiano
 
 let piano
@@ -29,17 +30,16 @@ function PianoPage () {
       note: "c",
       octave: 8
     }
-    if (!piano) {
-      try {
-        piano = newPiano(startNote, endNote)
-        piano.keyDown = onPianoKeydown
-        piano.keyUp = onPianoKeyup
-        // console.log(piano)
-      } catch (e) {
-        console.log(e)
-      }
-      pianoDom.current.appendChild(piano.HTML)
+    console.log(piano)
+    try {
+      piano = newPiano(startNote, endNote)
+      piano.keyDown = onPianoKeydown
+      piano.keyUp = onPianoKeyup
+      // console.log(piano)
+    } catch (e) {
+      console.log(e)
     }
+    pianoDom.current.appendChild(piano.HTML)
 
     MIDI.loadPlugin({
       soundfontUrl: process.env.PUBLIC_URL + "/soundfont/",
@@ -59,17 +59,20 @@ function PianoPage () {
     })
   }, [])
   return (
-    <div>
-      <div 
-        ref={pianoDom}
-        style={{
-          width: '100%',
-          height: '150px',
-          position: 'fixed',
-          bottom: '0px'
-        }}
-      ></div>
-    </div>
+    <Fragment>
+      <Affix style={{position: 'fixed', left: '0px', width: '100%', bottom: '0px'}}>
+        <Row>
+          <Col span={24}>
+            <div
+              ref={pianoDom}
+              style={{
+                height: '150px',
+              }}>
+            </div>
+          </Col>
+        </Row>
+      </Affix>
+    </Fragment>
   )
 }
 

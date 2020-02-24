@@ -1,18 +1,25 @@
 import React from 'react';
-import {HashRouter, Route, Switch} from 'react-router-dom'
-import Sheet from './views/sheet';
-import PianoPage from './views/piano';
-
+import {BrowserRouter} from 'react-router-dom'
+import {Layout} from 'antd'
+import router from './router/router'
+import Header from './components/layout/header'
+import Content from './components/layout/content'
+import Footer from './components/layout/footer'
 
 
 function App() {
   return (
-    <HashRouter className="App">
-      <Switch>
-        <Route path="/" exact component={PianoPage} />
-        <Route path="/sheet-lab" exact component={Sheet} />
-      </Switch>
-    </HashRouter>
+    <BrowserRouter className="App">
+      <Layout>
+        <Header 
+          router={router}
+        />
+        <Content
+          router={router}
+        />
+        <Footer />
+      </Layout>
+    </BrowserRouter>
   );
 }
 

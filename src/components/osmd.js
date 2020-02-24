@@ -1,9 +1,10 @@
 import React, { useRef, useEffect, useState } from 'react'
 import {OpenSheetMusicDisplay} from 'opensheetmusicdisplay'
 import MIDI from 'midi.js'
+import { Button } from 'antd'
 
-let osmd
 let lastTime = 0
+let osmd
 
 function Osmd() {
     let [toggle, setToggle] = useState(false)
@@ -61,48 +62,47 @@ function Osmd() {
     let osmdRef = useRef()
     useEffect(() => {
         console.log('init')
-        if (!osmd) {
-            osmd = new OpenSheetMusicDisplay(osmdRef.current, {
-                autoResize: true,
-                // backend: backendType,
-                //backend: "canvas",
-                disableCursor: false,
-                drawingParameters: "compact",// : "default", // try compact (instead of default)
-                drawPartNames: true, // try false
-                // drawTitle: false,
-                // drawSubtitle: false,
-                drawFingerings: true,
-                fingeringPosition: "left", // left is default. try right. experimental: auto, above, below.
-                // fingeringInsideStafflines: "true", // default: false. true draws fingerings directly above/below notes
-                setWantedStemDirectionByXml: true, // try false, which was previously the default behavior
-                // drawUpToMeasureNumber: 3, // draws only up to measure 3, meaning it draws measure 1 to 3 of the piece.
-                drawFromMeasureNumber : 0,
-                drawUpToMeasureNumber : Number.MAX_SAFE_INTEGER,
-    
-                //drawMeasureNumbers: false, // disable drawing measure numbers
-                //measureNumberInterval: 4, // draw measure numbers only every 4 bars (and at the beginning of a new system)
-    
-                // coloring options
-                coloringEnabled: true,
-                // defaultColorNotehead: "#CC0055", // try setting a default color. default is black (undefined)
-                // defaultColorStem: "#BB0099",
-    
-                autoBeam: false, // try true, OSMD Function Test AutoBeam sample
-                autoBeamOptions: {
-                    beam_rests: false,
-                    beam_middle_rests_only: false,
-                    //groups: [[3,4], [1,1]],
-                    maintain_stem_directions: false
-                },
-    
-                pageFormat: 'Endless',
-                pageBackgroundColor: '#000'
-            })
-            osmd.load(process.env.PUBLIC_URL + '/music.xml').then(() => {
-                console.log('loaded')
-                osmd.render()
-            })
-        }
+        osmd = new OpenSheetMusicDisplay(osmdRef.current, {
+            autoResize: true,
+            // backend: backendType,
+            //backend: "canvas",
+            disableCursor: false,
+            drawingParameters: "compact",// : "default", // try compact (instead of default)
+            drawPartNames: true, // try false
+            // drawTitle: false,
+            // drawSubtitle: false,
+            drawFingerings: true,
+            fingeringPosition: "left", // left is default. try right. experimental: auto, above, below.
+            // fingeringInsideStafflines: "true", // default: false. true draws fingerings directly above/below notes
+            setWantedStemDirectionByXml: true, // try false, which was previously the default behavior
+            // drawUpToMeasureNumber: 3, // draws only up to measure 3, meaning it draws measure 1 to 3 of the piece.
+            drawFromMeasureNumber : 0,
+            drawUpToMeasureNumber : Number.MAX_SAFE_INTEGER,
+
+            //drawMeasureNumbers: false, // disable drawing measure numbers
+            //measureNumberInterval: 4, // draw measure numbers only every 4 bars (and at the beginning of a new system)
+
+            // coloring options
+            coloringEnabled: true,
+            // defaultColorNotehead: "#CC0055", // try setting a default color. default is black (undefined)
+            // defaultColorStem: "#BB0099",
+
+            autoBeam: false, // try true, OSMD Function Test AutoBeam sample
+            autoBeamOptions: {
+                beam_rests: false,
+                beam_middle_rests_only: false,
+                //groups: [[3,4], [1,1]],
+                maintain_stem_directions: false
+            },
+
+            pageFormat: 'Endless',
+            pageBackgroundColor: '#000'
+        })
+
+        osmd.load(process.env.PUBLIC_URL + '/music.xml').then(() => {
+            console.log('loaded')
+            osmd.render()
+        })
 
         MIDI.loadPlugin({
           soundfontUrl: process.env.PUBLIC_URL + "/soundfont/",
@@ -124,7 +124,11 @@ function Osmd() {
 
     return (
         <div>
-            <button
+            <Button
+              shape="circle"
+              icon={
+                toggle ? 'eye-invisible' : 'eye' 
+              }
               onClick={() => {
                 toggle = !toggle
                 if (toggle) {
@@ -134,30 +138,35 @@ function Osmd() {
                 }
                 setToggle(toggle)
               }}
-            >{toggle?'隐藏': '显示'}指针
-            </button>
-            <button
+            />
+            <Button
+              shape="circle"
+              icon="step-forward"
               onClick={() => {
                 osmd.cursor.next()
                 onNote(osmd.cursor.iterator)
               }}
-            >next</button>
-            <button
+            />
+            <Button
+              shape="circle"
+              icon="caret-right"
               onClick={() => {
                 osmd.cursor.reset()
                 playAll(osmd.cursor)
               }}
-            >play</button>
-            <button
+            />
+            <Button
+              shape="circle"
+              icon="fast-backward"
               onClick={() => {
                 osmd.cursor.reset()
               }}
-            >重置指针</button>
+            />
             <div 
                 ref={osmdRef}
                 style={{
-                    width: '900px',
-                    height: '1200px'
+                    width: '100%'
+                    // height: '1200px'
                 }}
             >
             </div>
