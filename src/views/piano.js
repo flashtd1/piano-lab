@@ -60,7 +60,7 @@ function PianoPage () {
   }, [])
   return (
     <Fragment>
-      <Affix style={{position: 'fixed', left: '0px', width: '100%', bottom: '0px'}}>
+      <Affix style={{position: 'fixed', left: '0px', width: '100%', bottom: '64px'}}>
         <Row>
           <Col span={24}>
             <div

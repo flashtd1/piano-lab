@@ -1,5 +1,5 @@
-import React from 'react'
-import { Layout, Menu } from 'antd'
+import React, { Fragment } from 'react'
+import { Layout, Menu, Affix } from 'antd'
 import { Link, useLocation } from 'react-router-dom'
 
 export default function Header (props) {
@@ -12,26 +12,30 @@ export default function Header (props) {
     index = 0
   }
   return (
-    <Layout.Header>
-      <Menu
-        theme="dark"
-        mode="horizontal"
-        defaultSelectedKeys={[index + ""]}
-        style={{lineHeight: '64px'}}
-      >
-        {
-          router.map((item, index) => {
-            return (
-              <Menu.Item key={index + ""}>
-                <Link to={item.path}>
-                  { item.name }
-                </Link>
-              </Menu.Item>
-            )
-          })
-        }
-        
-      </Menu>
-    </Layout.Header>
+    <Fragment>
+      <Affix style={{position: 'fixed', width: '100%', top: '0px', zIndex:"1000"}}>
+        <Layout.Header>
+          <Menu
+            theme="dark"
+            mode="horizontal"
+            defaultSelectedKeys={[index + ""]}
+            style={{lineHeight: '64px'}}
+          >
+            {
+              router.map((item, index) => {
+                return (
+                  <Menu.Item key={index + ""}>
+                    <Link to={item.path}>
+                      { item.name }
+                    </Link>
+                  </Menu.Item>
+                )
+              })
+            }
+            
+          </Menu>
+        </Layout.Header>
+      </Affix>
+    </Fragment>
   )
 }
