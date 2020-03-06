@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useState } from 'react'
 import {OpenSheetMusicDisplay} from 'opensheetmusicdisplay'
 import MIDI from 'midi.js'
-import { Button } from 'antd'
+import { Button, Affix } from 'antd'
 
 let lastTime = 0
 let osmd
@@ -19,7 +19,7 @@ function Osmd() {
           for(var j = 0; j < notes.length; j++){
             const note = notes[j];
             // make sure our note is not silent
-            if((note !== null) && (note.halfTone !== 0)){
+            if((note !== null)){
               allNotes.push({
                   "note": note.halfTone+12, // see issue #224
                   "time": iterator.currentTimeStamp.realValue * 4
@@ -124,44 +124,46 @@ function Osmd() {
 
     return (
         <div>
-            <Button
-              shape="circle"
-              icon={
-                toggle ? 'eye-invisible' : 'eye' 
-              }
-              onClick={() => {
-                toggle = !toggle
-                if (toggle) {
-                  osmd.cursor.show()
-                } else {
-                  osmd.cursor.hide()
+            <Affix offsetTop={90}>
+              <Button
+                shape="circle"
+                icon={
+                  toggle ? 'eye-invisible' : 'eye' 
                 }
-                setToggle(toggle)
-              }}
-            />
-            <Button
-              shape="circle"
-              icon="step-forward"
-              onClick={() => {
-                osmd.cursor.next()
-                onNote(osmd.cursor.iterator)
-              }}
-            />
-            <Button
-              shape="circle"
-              icon="caret-right"
-              onClick={() => {
-                osmd.cursor.reset()
-                playAll(osmd.cursor)
-              }}
-            />
-            <Button
-              shape="circle"
-              icon="fast-backward"
-              onClick={() => {
-                osmd.cursor.reset()
-              }}
-            />
+                onClick={() => {
+                  toggle = !toggle
+                  if (toggle) {
+                    osmd.cursor.show()
+                  } else {
+                    osmd.cursor.hide()
+                  }
+                  setToggle(toggle)
+                }}
+              />
+              <Button
+                shape="circle"
+                icon="step-forward"
+                onClick={() => {
+                  osmd.cursor.next()
+                  onNote(osmd.cursor.iterator)
+                }}
+              />
+              <Button
+                shape="circle"
+                icon="caret-right"
+                onClick={() => {
+                  osmd.cursor.reset()
+                  playAll(osmd.cursor)
+                }}
+              />
+              <Button
+                shape="circle"
+                icon="fast-backward"
+                onClick={() => {
+                  osmd.cursor.reset()
+                }}
+              />
+            </Affix>
             <div 
                 ref={osmdRef}
                 style={{
