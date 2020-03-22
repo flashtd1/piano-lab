@@ -1,6 +1,7 @@
 import IndexPage from '../views/index'
 import PianoPage from '../views/piano'
 import Sheet from '../views/sheet'
+import StaveEditorPage from '../views/staveeditor'
 
 export default [
     {
@@ -17,5 +18,10 @@ export default [
         path: '/piano',
         name: '网页钢琴',
         component: PianoPage
+    },
+    {
+        path: '/editor',
+        name: '五线谱编辑器',
+        component: StaveEditorPage
     }
 ]
