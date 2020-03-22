@@ -40,9 +40,9 @@ export default function Index() {
         {
           comments.map((item, index) => {
             return (
-              <Comment
+              <Comment key={index}
                 // actions={actions}
-                author={<a>{item.author}</a>}
+                author={item.author}
                 // avatar={
                 //   <Avatar
                 //     src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
