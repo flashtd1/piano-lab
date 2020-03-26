@@ -10,6 +10,7 @@
     "babel-plugin-import": "^1.13.0",
     "customize-cra": "^0.9.1",
     "html-piano": "^1.1.2",
+    "lodash": "^4.17.15",
     "midi.js": "^0.3.1",
     "opensheetmusicdisplay": "^0.7.3",
     "react": "^16.12.0",

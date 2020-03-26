@@ -1,13 +1,9 @@
+import { useEffect } from "react"
 import Vex from 'vexflow'
-import React from 'react'
-import { useRef, Fragment, useEffect } from 'react'
 
 const VF = Vex.Flow
 
-export default function VexFlow () {
-  let vexRef = useRef()
-  // let [measures, setMeasure] = useState([])
-
+function useVexflowInit(vexRef) {
   useEffect(() => {
     let renderer = new VF.Renderer(vexRef.current, VF.Renderer.Backends.SVG)
     renderer.resize(12 + 300*5, 40+ 90*2)
@@ -47,11 +43,9 @@ export default function VexFlow () {
     // notes[0].note_heads[0].attrs.el.addEventListener('click', (e) => {
     //     console.log(e, 'click')
     // })
+  }, [])
+}
 
-  },[])
-  return (
-    <Fragment>
-        <div ref={vexRef}></div>
-    </Fragment>
-  )
+export {
+  useVexflowInit
 }
