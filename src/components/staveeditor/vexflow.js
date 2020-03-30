@@ -13,18 +13,16 @@ export default function VexFlow () {
   let location = useLocation()
   let vexRef = useRef()
   let qs = querystring.parse(location.search.substring(1))
-  let meta = {
-    title: '',
-    content: ''
-  }
-  meta = useSample(qs.type === 'sample')
-  meta = useSimpleInput(qs.type === 'simpleInput' || !qs.type)
-
+  qs.type = qs.type ? qs.type : 'simpleInput'
+  let meta = {}
+  meta['sample'] = useSample(qs.type === 'sample')
+  meta['simpleInput'] = useSimpleInput(qs.type === 'simpleInput')
+  let {title, content} = meta[qs.type]
   return (
     <Fragment>
       <Typography>
-        <Title>{meta.title}</Title>
-        <Paragraph>{meta.content}</Paragraph>
+        <Title>{title}</Title>
+        <Paragraph>{content}</Paragraph>
       </Typography>
       <div ref={vexRef}></div>
       <div id="new-song" style={{
