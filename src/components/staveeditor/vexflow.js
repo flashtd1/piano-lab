@@ -9,19 +9,10 @@ import querystring from 'querystring'
 export default function VexFlow () {
   let location = useLocation()
   let vexRef = useRef()
-  
   let qs = querystring.parse(location.search.substring(1))
-  // if (location.search)
-  switch(qs.type) {
-    case 'sample':
-      useSample()
-      break
-    case 'simpleInput':
-      useSimpleInput()
-      break
-  }
-  // useSample()
-  // useSimpleInput()
+  console.log(qs)
+  useSample(qs.type === 'sample')
+  useSimpleInput(qs.type === 'simpleInput' || !qs.type)
 
   return (
     <Fragment>
