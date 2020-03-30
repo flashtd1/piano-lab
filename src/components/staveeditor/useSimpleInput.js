@@ -197,6 +197,10 @@ function useSimpleInput (show) {
     }
 
   },[])
+  return {
+    title: '说明',
+    content: '5 新建system， 6 新建stave， 7 清空画布， 回车 重新渲染， 1~3 输入音符'
+  }
 }
 
 export {

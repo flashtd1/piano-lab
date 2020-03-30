@@ -6,16 +6,26 @@ import { useSimpleInput } from './useSimpleInput'
 import { useSample } from './useSample'
 import querystring from 'querystring'
 
+import { Typography } from 'antd'
+const { Title, Paragraph } = Typography
+
 export default function VexFlow () {
   let location = useLocation()
   let vexRef = useRef()
   let qs = querystring.parse(location.search.substring(1))
-  console.log(qs)
-  useSample(qs.type === 'sample')
-  useSimpleInput(qs.type === 'simpleInput' || !qs.type)
+  let meta = {
+    title: '',
+    content: ''
+  }
+  meta = useSample(qs.type === 'sample')
+  meta = useSimpleInput(qs.type === 'simpleInput' || !qs.type)
 
   return (
     <Fragment>
+      <Typography>
+        <Title>{meta.title}</Title>
+        <Paragraph>{meta.content}</Paragraph>
+      </Typography>
       <div ref={vexRef}></div>
       <div id="new-song" style={{
         width: '2000px',

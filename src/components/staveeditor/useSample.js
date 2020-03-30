@@ -32,6 +32,10 @@ function useSample(show) {
         }
         
       }, [])
+    return {
+        title: '说明',
+        content: '这是一个简单的示例'
+    }
 }
 
 export {
