@@ -46,7 +46,7 @@ octave  八度
 clefinstruction(OSMD) clef(vexflow) 谱号
 instrument 乐器
 rhythminstruction(OSMD) TimeSignature(vexflow)  节拍
-keyinstruction(OSMD) (key signature(vexflow)) 拍号
+keyinstruction(OSMD) (key signature(vexflow)) 调号
 
 modifier 调节器
     accidental (升、降、还原)临时记号的，临时符的
