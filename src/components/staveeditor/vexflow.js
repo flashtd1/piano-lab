@@ -2,6 +2,7 @@
 import React, { useState, useRef, Fragment, useEffect } from 'react'
 import {useLocation, useParams} from 'react-router-dom'
 // import { useVexflowInit } from './useNormalVex'
+import { useSimpleInput1 } from './useSimpleInput1'
 import { useSimpleInput } from './useSimpleInput'
 import { useSample } from './useSample'
 import querystring from 'querystring'
@@ -19,6 +20,7 @@ export default function VexFlow () {
   meta['sample'] = useSample(qs.type === 'sample')
   // 调用简单输入hook
   meta['simpleInput'] = useSimpleInput(qs.type === 'simpleInput')
+  meta['simpleInput1'] = useSimpleInput1(qs.type === 'simpleInput1')
   let {title, content} = meta[qs.type]
   return (
     <Fragment>

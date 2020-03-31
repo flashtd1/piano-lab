@@ -4,21 +4,23 @@ import _ from 'lodash'
 
 const VF = Vex.Flow
 
-function useSimpleInput (show) {
-    // 数据层，存放所有小节，所有voice
+function useSimpleInput1 (show) {
+  // 数据层，存放所有小节，所有voice
   // system数量和staves数量相等staves是一个数组，存放每个system下所有的stave
   let [systems, setSystems] = useState([])
   let [staves, setStaves] = useState([])
-  let [m, setM] = useState(0)
 
   // 操作层，存当前小节信息
-  let [currentNotesStr, setCurrentNotesStr] = useState('')
-  let [costTime, setCostTime] = useState(new VF.Fraction(0,1))
-  let [canInput, setCanInput] = useState(false)
-  let [stave, setStave] = useState([])
-
-  let vf = null
-  let score = null
+  let [m, setM] = useState(0)
+  let [currentNotesStr, setCurrentNotesStr] = useState('') // 当前小节已经输入的音符字符串
+  let [costTime, setCostTime] = useState(new VF.Fraction(0,1)) // 当前小节已经花费的时间
+  let [canInput, setCanInput] = useState(false) // 当前小节是否能输入
+  let [stave, setStave] = useState([]) // 当前小节
+  
+  // 工具\信号
+  let [renderSig, setRenderSig] = useState(0) // 渲染信号
+  let [vf, setVF] = useState(null) // Vexflow工厂实例
+  let [score, setScore] = useState(null) // Vexflow的Score工厂实例
 
   // 在当前stave编写note
   function writeNote(pitch, rhythmFraction) {
@@ -48,34 +50,48 @@ function useSimpleInput (show) {
     // console.log('systems', systems[m-1].vfSystem.parts[0].voices[0], m)
     
     // 更新数据
+    // if (restNum === 0) {
+    //   canInput = false
+    //   setCanInput(canInput)
+    // }
     if (restNum === 0) {
-      canInput = false
-      setCanInput(canInput)
+      setCanInput(false)
     }
     setCostTime(costTime)
-    setStave(stave)
+    setStave([...stave])
     setCurrentNotesStr(currentNotesStr)
     // 渲染
-    render()
+    setRenderSig(Math.random())
   }
 
   // 给当前system添加stave
   function addStave() {
-    staves.push([
+    // staves.push([
+    //   {
+    //     notes: score.notes('B4/1/r')
+    //   }
+    // ])
+    // stave = staves[staves.length -1]
+    // setStaves(staves)
+    // setStave(stave)
+    let newStave = [
       {
         notes: score.notes('B4/1/r')
       }
-    ])
-    stave = staves[staves.length -1]
-    setStaves(staves)
-    setStave(stave)
-    canInput = true
-    setCanInput(canInput)
-    currentNotesStr = ''
-    setCurrentNotesStr(currentNotesStr)
-    costTime = new VF.Fraction(0,1)
-    setCostTime(costTime)
-    render()
+    ]
+    staves.push(newStave)
+    setStaves([...staves])
+    setStave(newStave)
+    // canInput = true
+    // setCanInput(canInput)
+    // currentNotesStr = ''
+    // setCurrentNotesStr(currentNotesStr)
+    setCurrentNotesStr('')
+    // costTime = new VF.Fraction(0,1)
+    // setCostTime(costTime)
+    setCostTime(new VF.Fraction(0, 1))
+    setCanInput(true)
+    setRenderSig(Math.random())
   }
 
   // 添加system
@@ -91,6 +107,7 @@ function useSimpleInput (show) {
 
   // 渲染
   function render() {
+    if (!vf) return
     clear()
     console.log(systems, staves)
     systems = systems.map((sysData) => {
@@ -125,8 +142,8 @@ function useSimpleInput (show) {
       staveData[0].vfStave = vfStave
       return staveData
     })
-    setSystems(systems)
-    setStaves(staves)
+    setSystems([...systems])
+    setStaves([...staves])
     vf.draw()
   }
 
@@ -139,6 +156,7 @@ function useSimpleInput (show) {
   // 按键事件处理
   function keyDown({keyCode}) {
     console.log('keyCode', keyCode)
+    console.log('canInput', canInput)
     let pitch = ''
     let rhythm = new VF.Fraction(0,1)
 
@@ -181,6 +199,8 @@ function useSimpleInput (show) {
         renderer: {elementId: 'new-song', width: 2000, height: 2000}
       })
       score = vf.EasyScore()
+      setVF(vf)
+      setScore(score)
       window.addEventListener('keydown', keyDown)
     }
     
@@ -191,6 +211,12 @@ function useSimpleInput (show) {
     }
 
   },[])
+
+  useEffect(() => {
+    console.log('renderSig: canInput', canInput)
+    render()
+  }, [renderSig])
+
   return {
     title: '说明',
     content: '5 新建system， 6 新建stave， 7 清空画布， 回车 重新渲染， 1~3 输入音符'
@@ -198,5 +224,5 @@ function useSimpleInput (show) {
 }
 
 export {
-    useSimpleInput
+    useSimpleInput1
 }
