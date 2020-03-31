@@ -139,6 +139,7 @@ function useSimpleInput (show) {
   // 按键事件处理
   function keyDown({keyCode}) {
     console.log('keyCode', keyCode)
+    console.log('keyDown: canInput', canInput)
     let pitch = ''
     let rhythm = new VF.Fraction(0,1)
 

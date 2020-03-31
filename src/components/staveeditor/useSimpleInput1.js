@@ -24,11 +24,11 @@ function useSimpleInput1 (show) {
 
   // 在当前stave编写note
   function writeNote(pitch, rhythmFraction) {
+    console.log(canInput)
     if (!canInput) {
       console.log('current stave is full')
       return
     }
-
     costTime.add(rhythmFraction)
     let rhythm = rhythmFraction.toSimplifiedString().substring(1)
     let newNoteStr = `${pitch + rhythm}`
@@ -66,14 +66,6 @@ function useSimpleInput1 (show) {
 
   // 给当前system添加stave
   function addStave() {
-    // staves.push([
-    //   {
-    //     notes: score.notes('B4/1/r')
-    //   }
-    // ])
-    // stave = staves[staves.length -1]
-    // setStaves(staves)
-    // setStave(stave)
     let newStave = [
       {
         notes: score.notes('B4/1/r')
@@ -82,13 +74,7 @@ function useSimpleInput1 (show) {
     staves.push(newStave)
     setStaves([...staves])
     setStave(newStave)
-    // canInput = true
-    // setCanInput(canInput)
-    // currentNotesStr = ''
-    // setCurrentNotesStr(currentNotesStr)
     setCurrentNotesStr('')
-    // costTime = new VF.Fraction(0,1)
-    // setCostTime(costTime)
     setCostTime(new VF.Fraction(0, 1))
     setCanInput(true)
     setRenderSig(Math.random())
@@ -164,13 +150,11 @@ function useSimpleInput1 (show) {
       case 49:
         pitch = 'C4'
         rhythm = new VF.Fraction(1,8)
-        // rhythm = new VF.Fraction(1,2)
         writeNote(pitch, rhythm)
         break
       case 50:
         pitch = 'D4'
         rhythm = new VF.Fraction(1,8)
-        // rhythm = new VF.Fraction(1,4)
         writeNote(pitch, rhythm)
         break
       case 51:
