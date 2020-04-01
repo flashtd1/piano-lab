@@ -48,7 +48,6 @@ function useOsmdInit (osmdRef) {
   return os
 }
 
-
 function useResize (isLoaded) {
   let width = document.body.clientWidth
   console.log(width)
