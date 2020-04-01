@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 
-export default function(setCode) {
+export default function() {
+    const [code, setCode] = useState('')
     function getKey({keyCode}) {
         setCode(keyCode)
     }
@@ -10,4 +11,5 @@ export default function(setCode) {
             window.removeEventListener('kendown', getKey)
         }
     }, [])
+    return code
 }
