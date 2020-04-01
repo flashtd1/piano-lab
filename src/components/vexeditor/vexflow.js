@@ -1,12 +1,14 @@
 import Vex from 'vexflow'
 import React, { useState, Fragment, useEffect, useRef } from 'react'
 import useKeyCode from '../../hooks/useKeyCode'
+import { Typography } from 'antd'
+const { Title, Paragraph } = Typography
 
 const VF = Vex.Flow
 
 export default function VexFlow () {
-  console.log('update')
-  let [code, setCode] = useState('')
+  const title = '说明'
+  const content = '5 新建system， 6 新建stave， 7 清空画布， 回车 重新渲染， 1~3 输入音符'
   const vfRef = useRef()
   const scoreRef = useRef()
   const vf = vfRef.current
@@ -126,7 +128,7 @@ export default function VexFlow () {
     vf.draw()
   }
 
-  useKeyCode(setCode)
+  let code = useKeyCode()
 
   useEffect(() => {
     vfRef.current = new VF.Factory({
@@ -165,6 +167,10 @@ export default function VexFlow () {
 
   return (
     <Fragment>
+      <Typography>
+        <Title>{title}</Title>
+        <Paragraph>{content}</Paragraph>
+      </Typography>
       <div id="new-song" style={{
         width: '2000px',
         height: '500px'
