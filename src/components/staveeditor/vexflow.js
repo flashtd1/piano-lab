@@ -1,34 +1,17 @@
-// import Vex from 'vexflow'
-import React, { useState, useRef, Fragment, useEffect } from 'react'
-import {useLocation, useParams} from 'react-router-dom'
-// import { useVexflowInit } from './useNormalVex'
-import { useSimpleInput1 } from './useSimpleInput1'
+import React, { Fragment } from 'react'
 import { useSimpleInput } from './useSimpleInput'
-import { useSample } from './useSample'
-import querystring from 'querystring'
 
 import { Typography } from 'antd'
 const { Title, Paragraph } = Typography
 
 export default function VexFlow () {
-  let location = useLocation()
-  let vexRef = useRef()
-  let qs = querystring.parse(location.search.substring(1))
-  qs.type = qs.type ? qs.type : 'simpleInput'
-  let meta = {}
-  // 调用简单示例hook
-  meta['sample'] = useSample(qs.type === 'sample')
-  // 调用简单输入hook
-  meta['simpleInput'] = useSimpleInput(qs.type === 'simpleInput')
-  meta['simpleInput1'] = useSimpleInput1(qs.type === 'simpleInput1')
-  let {title, content} = meta[qs.type]
+  let {title, content} = useSimpleInput()
   return (
     <Fragment>
       <Typography>
         <Title>{title}</Title>
         <Paragraph>{content}</Paragraph>
       </Typography>
-      <div ref={vexRef}></div>
       <div id="new-song" style={{
         width: '2000px',
         height: '500px'

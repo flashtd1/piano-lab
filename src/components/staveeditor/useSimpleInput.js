@@ -1,10 +1,10 @@
 import Vex from 'vexflow'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import _ from 'lodash'
 
 const VF = Vex.Flow
 
-function useSimpleInput (show) {
+function useSimpleInput () {
     // 数据层，存放所有小节，所有voice
   // system数量和staves数量相等staves是一个数组，存放每个system下所有的stave
   let [systems, setSystems] = useState([])
@@ -17,8 +17,8 @@ function useSimpleInput (show) {
   let [canInput, setCanInput] = useState(false)
   let [stave, setStave] = useState([])
 
-  let vf = null
-  let score = null
+  let vf = useRef()
+  let score = useRef()
 
   // 在当前stave编写note
   function writeNote(pitch, rhythmFraction) {
@@ -39,7 +39,7 @@ function useSimpleInput (show) {
     let restStr = `,B4/8/r`.repeat(restNum)
     // 获取已经编写的note，添加这次添加的noteStr
     currentNotesStr = currentNotesStr ? `${currentNotesStr}, ${newNoteStr}` : newNoteStr
-    let notes = score.notes(`${currentNotesStr}${restStr}`)
+    let notes = score.current.notes(`${currentNotesStr}${restStr}`)
     // 替换当前stave中的notes
     stave[0].notes = notes
     let voices = systems[m-1].vfSystem.parts[0].voices
@@ -63,7 +63,7 @@ function useSimpleInput (show) {
   function addStave() {
     staves.push([
       {
-        notes: score.notes('B4/1/r')
+        notes: score.current.notes('B4/1/r')
       }
     ])
     stave = staves[staves.length -1]
@@ -94,7 +94,7 @@ function useSimpleInput (show) {
     clear()
     console.log(systems, staves)
     systems = systems.map((sysData) => {
-      let vfSystem = vf.System({
+      let vfSystem = vf.current.System({
         x: sysData.index * sysData.width,
         width: sysData.width
       })
@@ -104,7 +104,7 @@ function useSimpleInput (show) {
 
     staves = staves.map((staveData, index) => {
       let vfStave = systems[index].vfSystem.addStave({
-        voices: [score.voice(staveData[0].notes)]
+        voices: [score.current.voice(staveData[0].notes)]
       })
       console.log('vfStave', vfStave)
       if (index === 0) {
@@ -127,13 +127,13 @@ function useSimpleInput (show) {
     })
     setSystems(systems)
     setStaves(staves)
-    vf.draw()
+    vf.current.draw()
   }
 
   // 清除画布
   function clear () {
-    if (!vf) return 
-    vf.getContext().clear()
+    if (!vf.current) return 
+    vf.current.getContext().clear()
   }
 
   // 按键事件处理
@@ -147,13 +147,11 @@ function useSimpleInput (show) {
       case 49:
         pitch = 'C4'
         rhythm = new VF.Fraction(1,8)
-        // rhythm = new VF.Fraction(1,2)
         writeNote(pitch, rhythm)
         break
       case 50:
         pitch = 'D4'
         rhythm = new VF.Fraction(1,8)
-        // rhythm = new VF.Fraction(1,4)
         writeNote(pitch, rhythm)
         break
       case 51:
@@ -177,18 +175,14 @@ function useSimpleInput (show) {
   }
   
   useEffect(() => {
-    if (show) {
-      vf = new VF.Factory({
-        renderer: {elementId: 'new-song', width: 2000, height: 2000}
-      })
-      score = vf.EasyScore()
-      window.addEventListener('keydown', keyDown)
-    }
+    vf.current = new VF.Factory({
+      renderer: {elementId: 'new-song', width: 2000, height: 2000}
+    })
+    score.current = vf.current.EasyScore()
+    window.addEventListener('keydown', keyDown)
     
     return () => {
-      if (show) {
-        window.removeEventListener('keydown', keyDown)
-      }
+      window.removeEventListener('keydown', keyDown)
     }
 
   },[])
