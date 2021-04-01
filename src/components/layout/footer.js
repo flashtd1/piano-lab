@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react'
 import { Layout, Affix } from 'antd'
-import config from '../../config.js'
+import config from '../../../local_env.json'
 
 export default function Footer () {
   let {ICP} = config
