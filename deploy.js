@@ -1,5 +1,5 @@
 const OSS = require('ali-oss'),
-    config = require('./local_env.json'),
+    config = require('./src/config/local_env.json'),
     path = require('path'),
     fs = require('fs')
 
